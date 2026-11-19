@@ -3,20 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Vice City Sunset — GTA 6-style cover maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+  <section class="panel controls" aria-label="Cover controls">
+    <header>
+      <h1>VICE CITY SUNSET</h1>
+      <p class="tagline">Turn your photo and a caption into GTA 6-style multi-panel cover art. Offline &mdash; photos never leave your machine.</p>
+    </header>
+
+    <fieldset>
+      <legend>1 &middot; Size</legend>
+      <div class="row" id="sizes">
+        <button type="button" data-size="1080x1080" class="chip active">Square<br><span>1080 &times; 1080</span></button>
+        <button type="button" data-size="1080x1350" class="chip">Portrait<br><span>1080 &times; 1350</span></button>
+        <button type="button" data-size="1920x1080" class="chip">Wide<br><span>1920 &times; 1080</span></button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2 &middot; Layout</legend>
+      <div class="row" id="layouts">
+        <button type="button" data-layout="hero" class="chip active">Hero split</button>
+        <button type="button" data-layout="triptych" class="chip">Triptych</button>
+        <button type="button" data-layout="quad" class="chip">Quad</button>
+        <button type="button" data-layout="strip" class="chip">Top strip</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3 &middot; Sunset grade</legend>
+      <div class="row" id="grades">
+        <button type="button" data-grade="sunset" class="chip swatch sunset active">Vice Sunset</button>
+        <button type="button" data-grade="neon" class="chip swatch neon">Neon Nights</button>
+        <button type="button" data-grade="gold" class="chip swatch gold">Golden Hour</button>
+        <button type="button" data-grade="noir" class="chip swatch noir">Noir</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>4 &middot; Caption</legend>
+      <label>Title <input id="title" type="text" maxlength="28" value="SUNSET HEIST"></label>
+      <label>Subtitle <input id="subtitle" type="text" maxlength="28" value="VICE CITY"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>5 &middot; Photos</legend>
+      <p class="hint">Load up to three photos from your machine, then give each panel one of them.</p>
+      <div class="slots" id="slots"></div>
+      <div class="row">
+        <button type="button" id="fillAllA" class="mini">One photo, all panels</button>
+        <button type="button" id="spreadPhotos" class="mini">Spread A &middot; B &middot; C</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>6 &middot; Crop the selected panel</legend>
+      <div class="row" id="panelTabs"></div>
+      <label>Photo in this panel
+        <select id="panelSlot">
+          <option value="0">Photo A</option>
+          <option value="1">Photo B</option>
+          <option value="2">Photo C</option>
+        </select>
+      </label>
+      <label>Zoom <span id="zoomValue">100%</span>
+        <input id="zoom" type="range" min="50" max="300" value="100">
+      </label>
+      <div class="row">
+        <button type="button" id="resetCrop" class="mini">Reset crop</button>
+        <button type="button" id="centerCrop" class="mini">Centre photo</button>
+      </div>
+      <p class="hint">Or drag the photo right on the cover &mdash; scroll to zoom.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>7 &middot; Export PNG</legend>
+      <div class="row export-row">
+        <button type="button" id="exportSquare" class="export">Square PNG</button>
+        <button type="button" id="exportPortrait" class="export">Portrait PNG</button>
+        <button type="button" id="exportWide" class="export">Wide PNG</button>
+      </div>
+      <p id="status" role="status"></p>
+    </fieldset>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <section class="stage" aria-label="Cover preview">
+    <canvas id="cover" width="720" height="720" aria-label="Cover preview"></canvas>
+    <p class="hint stage-hint">Click a panel to select it, then drag to reposition its photo.</p>
+  </section>
 </main>
 <script type="module" src="./src/main.js"></script>
 </body>
